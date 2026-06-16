@@ -1,0 +1,20 @@
+name: Build Single File Exe
+on: workflow_dispatch
+
+jobs:
+  build:
+    runs-on: windows-latest
+    steps:
+      - name: Download Prism Launcher Portable
+        run: |
+          Invoke-WebRequest -Uri "https://github.com/PrismLauncher/PrismLauncher/releases/download/8.4/PrismLauncher-Windows-MSVC-Portable-8.4.zip" -OutFile "prism.zip"
+          Expand-Archive -Path "prism.zip" -DestinationPath "Prism"
+          
+      - name: Install Enigma Virtual Box CLI
+        run: |
+          choco install enigmavirtualbox -y
+          
+      - name: Package into Single Exe
+        run: |
+          # This uses the command-line tool to instantly fuse the folder into one file
+          & "C:\Program Files (x86)\Enigma Virtual Box\enigmavbconsole.exe" ...
